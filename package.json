@@ -74,6 +74,6 @@
   },
   "main": "index.js",
   "repository": "https://github.com/Erickvflima/front-end-fj-company.git",
-  "author": "erick.lima <erick.lima@vileve.com.br>",
+  "author": "erick.lima",
   "license": "MIT"
 }
