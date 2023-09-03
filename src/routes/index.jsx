@@ -24,6 +24,11 @@ const Home = Loader(
     return import('../pages/Home');
   }),
 );
+const Dashboard = Loader(
+  lazy(() => {
+    return import('../pages/Dashboard');
+  }),
+);
 
 const Signin = Loader(
   lazy(() => {
@@ -33,10 +38,16 @@ const Signin = Loader(
 
 const routes = [
   {
-    path: '/',
+    path: '/home',
     title: 'Home',
     component: <Home />,
-    isPrivate: true,
+    isPrivate: false,
+  },
+  {
+    path: '/dasboard',
+    title: 'Dashboard',
+    component: <Dashboard />,
+    isPrivate: false,
   },
   {
     path: '/signin',
