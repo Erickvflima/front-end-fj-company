@@ -3,7 +3,7 @@
 import NestedMenuItem from 'mui-nested-menu-item';
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-
+import { v4 as uuidv4 } from 'uuid';
 import { ArrowRight, ExpandLess, ExpandMore } from '@mui/icons-material';
 import {
   Collapse,
@@ -238,7 +238,7 @@ const Sections = () => {
       {sections.map((section) => {
         const IconSection = section.icon;
         return (
-          <Box key={`${section.section + section.href}-sectionBox`}>
+          <Box key={uuidv4()}>
             {section.isVisible && (
               <List
                 component="nav"

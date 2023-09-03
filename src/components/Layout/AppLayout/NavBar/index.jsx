@@ -15,6 +15,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import MuiAppBar from '@mui/material/AppBar';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import { v4 as uuidv4 } from 'uuid';
 import { Stack } from '@mui/system';
 import FakePage from '../../../../pages/FakePage';
 // import logo from 'assets/images/logo_clara.png';
@@ -79,6 +80,8 @@ const DrawerHeader = styled('div')(({ theme }) => {
 });
 
 const ResponsiveDrawer = () => {
+  // eslint-disable-next-line no-undef
+  console.log('aquiii');
   const theme = useTheme();
   const [open, setOpen] = useState(true);
 
@@ -198,9 +201,19 @@ const ResponsiveDrawer = () => {
         >
           <Grid item xs={12}>
             <Routes>
+              {
+                // eslint-disable-next-line no-undef
+                console.log('aquiii')
+              }
               {routes.map(({ isPrivate, path, component: Component }) => {
+                // eslint-disable-next-line no-undef
+                console.log(routes);
+                // eslint-disable-next-line no-undef
+                console.log(isPrivate);
                 if (isPrivate) {
-                  return <Route path={path} element={Component} key={path} />;
+                  return (
+                    <Route path={path} element={Component} key={uuidv4()} />
+                  );
                 }
                 return false;
               })}

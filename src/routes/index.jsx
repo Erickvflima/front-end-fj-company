@@ -13,11 +13,11 @@ const Loader = (Component) => {
   };
 };
 
-// const Layout = Loader(
-//   lazy(() => {
-//     return import('components/Layout');
-//   }),
-// );
+const Layout = Loader(
+  lazy(() => {
+    return import('../components/Layout');
+  }),
+);
 
 const Home = Loader(
   lazy(() => {
@@ -38,16 +38,22 @@ const Signin = Loader(
 
 const routes = [
   {
+    path: '/*',
+    title: 'Layout',
+    component: <Layout />,
+    isPrivate: false,
+  },
+  {
     path: '/home',
     title: 'Home',
     component: <Home />,
     isPrivate: false,
   },
   {
-    path: '/',
+    path: '/dashboard',
     title: 'Dashboard',
     component: <Dashboard />,
-    isPrivate: false,
+    isPrivate: true,
   },
   {
     path: '/signin',

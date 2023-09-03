@@ -10,6 +10,7 @@ import { Navigate, Route, Routes, useNavigate } from 'react-router-dom';
 import ptBr from 'dayjs/locale/pt-br';
 import theme from './styles/theme/light';
 import FakePage from './pages/FakePage';
+import { v4 as uuidv4 } from 'uuid';
 import { useSelector } from 'react-redux';
 import Layout from './components/Layout';
 import routes from './routes';
@@ -32,14 +33,13 @@ const App = () => {
       <ThemeProvider theme={theme}>
         <Routes>
           {routes.map(({ isPrivate, component: Component, path }) => {
-            // eslint-disable-next-line no-undef
-            console.log(isPrivate, Component, path);
             if (!isPrivate) {
-              return <Route path={path} element={Component} key={path} />;
+              return <Route path={path} element={Component} key={uuidv4()} />;
             }
             return false;
           })}
           <Route path="*" element={<FakePage />} />
+          {}
           {signedRedux ? (
             <Route path="/*" element={<Layout />} />
           ) : (

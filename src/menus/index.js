@@ -8,7 +8,7 @@ const sections = [
     href: '/menuum/list',
     open: true,
     icon: Article,
-    isVisible: false,
+    isVisible: true,
   },
   {
     subheader: 'menudois',
