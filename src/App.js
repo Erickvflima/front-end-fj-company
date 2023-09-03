@@ -18,8 +18,6 @@ const App = () => {
   const navigate = useNavigate();
 
   const signedRedux = useSelector((state) => {
-    // eslint-disable-next-line no-undef
-    console.log(state.user.signed);
     return state.user.signed;
   });
 
@@ -27,7 +25,6 @@ const App = () => {
     if (!signedRedux) {
       navigate('/signin');
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [signedRedux]);
 
   return (
@@ -35,6 +32,8 @@ const App = () => {
       <ThemeProvider theme={theme}>
         <Routes>
           {routes.map(({ isPrivate, component: Component, path }) => {
+            // eslint-disable-next-line no-undef
+            console.log(isPrivate, Component, path);
             if (!isPrivate) {
               return <Route path={path} element={Component} key={path} />;
             }

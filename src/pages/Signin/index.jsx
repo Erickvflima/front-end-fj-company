@@ -1,6 +1,6 @@
 /* eslint-disable object-curly-newline */
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Avatar,
   Button,
@@ -13,14 +13,14 @@ import {
   Typography,
 } from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useFormik } from 'formik';
 import { useSnackbar } from 'notistack';
 
 import { Helmet } from 'react-helmet-async';
-
+import logo from '../../assets/images/logo.png';
 import CustomBackDrop from '../../components/CustomBackDrop';
-// import useStyles from './styles';
+import { useNavigate } from 'react-router-dom';
 import validationSchema from './validationSchema';
 import { sendSignin } from '../../store/ducks/User';
 
@@ -30,7 +30,6 @@ const Copyright = (props) => {
       variant="body2"
       color="text.secondary"
       align="center"
-      // eslint-disable-next-line react/jsx-props-no-spreading
       {...props}
     >
       {'Copyright © '}
@@ -45,10 +44,14 @@ const Copyright = (props) => {
 
 const Signin = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const { enqueueSnackbar } = useSnackbar();
   const [open, setOpen] = useState(false);
 
-  // const classes = useStyles();
+  const user = useSelector((state) => {
+    return state.user;
+  });
 
   const formik = useFormik({
     enableReinitialize: true,
@@ -58,7 +61,7 @@ const Signin = () => {
       setOpen(true);
       const {
         meta: { requestStatus },
-        payload,
+        // payload,
       } = await dispatch(sendSignin(values.cpf));
       if (requestStatus === 'fulfilled') {
         enqueueSnackbar('Usuario logado com sucesso!', {
@@ -72,10 +75,14 @@ const Signin = () => {
         });
       }
       setOpen(false);
-      // eslint-disable-next-line no-undef
-      console.log(payload);
     },
   });
+
+  useEffect(() => {
+    if (user.sendSignin?.document?.typeOfAccess.length > 0) {
+      navigate('/', { replace: true });
+    }
+  }, [user]);
 
   return (
     <>
@@ -84,9 +91,6 @@ const Signin = () => {
         <title>Login</title>
       </Helmet>
       <Grid container component="main" sx={{ height: '100vh' }}>
-        {/* <Backdrop className={classes.backdrop} open={openBackdrop}>
-          <CircularProgress color="inherit" />
-        </Backdrop> */}
         <CssBaseline />
         <Grid
           item
@@ -95,9 +99,8 @@ const Signin = () => {
           md={false}
           lg={7}
           sx={{
-            // backgroundImage: `url(${logo})`,
+            backgroundImage: `url(${logo})`,
             backgroundRepeat: 'no-repeat',
-            backgroundSize: '25% 8%',
             backgroundColor: '#004668',
             backgroundPosition: 'center',
           }}
