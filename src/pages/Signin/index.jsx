@@ -21,7 +21,7 @@ import { Helmet } from 'react-helmet-async';
 // import CustomBackDrop from 'components/CustomBackDrop';
 // import useStyles from './styles';
 import validationSchema from './validationSchema';
-import { listUser } from '../../store/ducks/User';
+import { sendSignin } from '../../store/ducks/User';
 
 const Copyright = (props) => {
   return (
@@ -52,11 +52,9 @@ const Signin = () => {
     initialValues: { cpf: '' },
     validationSchema,
     onSubmit: async (values) => {
-      const { payload } = await dispatch(listUser());
+      const { payload } = await dispatch(sendSignin(values.cpf));
       // eslint-disable-next-line no-undef
       console.log(payload);
-      // eslint-disable-next-line no-undef
-      console.log(values);
     },
   });
 
