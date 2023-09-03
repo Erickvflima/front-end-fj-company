@@ -44,7 +44,7 @@ const routes = [
     isPrivate: false,
   },
   {
-    path: '/dasboard',
+    path: '/',
     title: 'Dashboard',
     component: <Dashboard />,
     isPrivate: false,

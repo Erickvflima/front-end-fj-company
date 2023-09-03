@@ -1,6 +1,6 @@
 /* eslint-disable object-curly-newline */
 /* eslint-disable react-hooks/exhaustive-deps */
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Avatar,
   Button,
@@ -15,10 +15,11 @@ import {
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { useDispatch } from 'react-redux';
 import { useFormik } from 'formik';
+import { useSnackbar } from 'notistack';
 
 import { Helmet } from 'react-helmet-async';
 
-// import CustomBackDrop from 'components/CustomBackDrop';
+import CustomBackDrop from '../../components/CustomBackDrop';
 // import useStyles from './styles';
 import validationSchema from './validationSchema';
 import { sendSignin } from '../../store/ducks/User';
@@ -44,6 +45,8 @@ const Copyright = (props) => {
 
 const Signin = () => {
   const dispatch = useDispatch();
+  const { enqueueSnackbar } = useSnackbar();
+  const [open, setOpen] = useState(false);
 
   // const classes = useStyles();
 
@@ -52,7 +55,23 @@ const Signin = () => {
     initialValues: { cpf: '' },
     validationSchema,
     onSubmit: async (values) => {
-      const { payload } = await dispatch(sendSignin(values.cpf));
+      setOpen(true);
+      const {
+        meta: { requestStatus },
+        payload,
+      } = await dispatch(sendSignin(values.cpf));
+      if (requestStatus === 'fulfilled') {
+        enqueueSnackbar('Usuario logado com sucesso!', {
+          variant: 'success',
+          autoHideDuration: 2000,
+        });
+      } else {
+        enqueueSnackbar('Usuario ou senha inválida!', {
+          variant: 'error',
+          autoHideDuration: 2000,
+        });
+      }
+      setOpen(false);
       // eslint-disable-next-line no-undef
       console.log(payload);
     },
@@ -60,7 +79,7 @@ const Signin = () => {
 
   return (
     <>
-      {/* <CustomBackDrop open={open} /> */}
+      <CustomBackDrop open={open} />
       <Helmet>
         <title>Login</title>
       </Helmet>

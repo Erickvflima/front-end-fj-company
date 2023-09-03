@@ -38,6 +38,21 @@ export const user = createSlice({
   name: 'user',
   initialState,
   reducers: {},
+  extraReducers: (builder) => {
+    builder
+      .addCase(sendSignin.pending, (state) => {
+        state.status = 'loading';
+      })
+      .addCase(sendSignin.fulfilled, (state, action) => {
+        state.status = 'completed';
+        state.signed = true;
+        state.sendSignin = action.payload;
+      })
+      .addCase(sendSignin.rejected, (state) => {
+        state.status = 'failed';
+        state.signed = false;
+      });
+  },
 });
 
 export default user.reducer;
