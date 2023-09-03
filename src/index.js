@@ -7,7 +7,7 @@ import { PersistGate } from 'redux-persist/integration/react';
 import { persistStore } from 'redux-persist';
 import { HelmetProvider } from 'react-helmet-async';
 
-import { store } from './store/index';
+import store from './store/index';
 import App from './App';
 
 const persistor = persistStore(store);

@@ -13,7 +13,7 @@ import {
   Typography,
 } from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-
+import { useDispatch } from 'react-redux';
 import { useFormik } from 'formik';
 
 import { Helmet } from 'react-helmet-async';
@@ -21,6 +21,7 @@ import { Helmet } from 'react-helmet-async';
 // import CustomBackDrop from 'components/CustomBackDrop';
 // import useStyles from './styles';
 import validationSchema from './validationSchema';
+import { listUser } from '../../store/ducks/User';
 
 const Copyright = (props) => {
   return (
@@ -42,6 +43,8 @@ const Copyright = (props) => {
 };
 
 const Signin = () => {
+  const dispatch = useDispatch();
+
   // const classes = useStyles();
 
   const formik = useFormik({
@@ -49,6 +52,9 @@ const Signin = () => {
     initialValues: { cpf: '' },
     validationSchema,
     onSubmit: async (values) => {
+      const { payload } = await dispatch(listUser());
+      // eslint-disable-next-line no-undef
+      console.log(payload);
       // eslint-disable-next-line no-undef
       console.log(values);
     },

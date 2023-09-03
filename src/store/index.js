@@ -1,24 +1,18 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { persistStore, persistReducer } from 'redux-persist';
+import { persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
-import rootReducer from './reducers';
+import reducers from './reducers';
 
 const persistConfig = {
-  key: 'root',
+  key: 'portal-servicos',
+  version: 1,
   storage,
 };
 
-const persistedReducer = persistReducer(persistConfig, rootReducer);
+const persistedReducer = persistReducer(persistConfig, reducers);
 
 const store = configureStore({
   reducer: persistedReducer,
-  middleware: (getDefaultMiddleware) => {
-    return getDefaultMiddleware({
-      serializableCheck: false,
-    });
-  },
 });
 
-const persistor = persistStore(store);
-
-export { store, persistor };
+export default store;

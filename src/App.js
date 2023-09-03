@@ -9,8 +9,8 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import ptBr from 'dayjs/locale/pt-br';
 import theme from './styles/theme/light';
-// import FakePage from './pages/FakePage';
-import Dashboard from './pages/Dashboard';
+import FakePage from './pages/FakePage';
+// import Dashboard from './pages/Dashboard';
 import Layout from './components/Layout';
 import routes from './routes';
 // import FakePage from 'pages/FakePage';
@@ -23,7 +23,7 @@ const App = () => {
   // const signedRedux = useAppSelector((state) => {
   //   return state.signer.signed;
   // });
-  const signedRedux = true;
+  const signedRedux = false;
 
   // useEffect(() => {
   //   if (
@@ -45,7 +45,7 @@ const App = () => {
             }
             return false;
           })}
-          <Route path="*" element={<Dashboard />} />
+          <Route path="*" element={<FakePage />} />
           {signedRedux ? (
             <Route path="/*" element={<Layout />} />
           ) : (
