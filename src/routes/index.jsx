@@ -29,6 +29,21 @@ const RandomMessages = Loader(
     return import('../pages/RandomMessages');
   }),
 );
+const MessageRegistration = Loader(
+  lazy(() => {
+    return import('../pages/MessageRegistration');
+  }),
+);
+const TeamMessages = Loader(
+  lazy(() => {
+    return import('../pages/TeamMessages');
+  }),
+);
+const UserManagement = Loader(
+  lazy(() => {
+    return import('../pages/UserManagement');
+  }),
+);
 const Dashboard = Loader(
   lazy(() => {
     return import('../pages/Dashboard');
@@ -55,9 +70,27 @@ const routes = [
     isPrivate: false,
   },
   {
-    path: '/randomMessages',
+    path: '/RandomMessages',
     title: 'Mensagem Aleatorias',
     component: <RandomMessages />,
+    isPrivate: true,
+  },
+  {
+    path: '/teamMessages',
+    title: 'Mensagens da Equipe',
+    component: <TeamMessages />,
+    isPrivate: true,
+  },
+  {
+    path: '/messageRegistration',
+    title: 'Cadastro de Mensagens',
+    component: <MessageRegistration />,
+    isPrivate: true,
+  },
+  {
+    path: '/userManagement',
+    title: 'Usuários',
+    component: <UserManagement />,
     isPrivate: true,
   },
   {
