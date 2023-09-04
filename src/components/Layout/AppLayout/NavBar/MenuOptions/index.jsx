@@ -11,19 +11,16 @@ import { Logout, Person } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 import { clearUser } from '../../../../../store/ducks/User';
 import { useDispatch, useSelector } from 'react-redux';
-// import { useAppDispatch, useAppSelector } from 'hooks/useAppStore';
-// import { clearSignin } from '../../store/ducks/Signer';
-// import { clearGroupAndPermissions } from 'store/ducks/Groups';
 
 const MenuOptions = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { user } = useSelector((state) => {
+  const {
+    user: { sendSignin },
+  } = useSelector((state) => {
     return state;
   });
   const [anchorEl, setAnchorEl] = useState(null);
-  // eslint-disable-next-line no-undef
-  console.log(user);
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -75,7 +72,7 @@ const MenuOptions = () => {
           <ListItemIcon>
             <Person fontSize="small" color="primary" />
           </ListItemIcon>
-          {user.sendSignin.document.name}
+          {sendSignin.document.name}
         </MenuItem>
         <MenuItem onClick={handleLogOut}>
           <ListItemIcon>

@@ -39,8 +39,6 @@ export const user = createSlice({
   initialState,
   reducers: {
     clearUser: (state) => {
-      // eslint-disable-next-line no-undef
-      console.log(state);
       state.status = 'idle';
       state.signed = false;
       state.sendSignin = {
