@@ -39,6 +39,7 @@ export const newMessage = createAsyncThunk(
     }
   },
 );
+
 export const deleteMessageById = createAsyncThunk(
   'message/delete',
   async (payload, { rejectWithValue }) => {

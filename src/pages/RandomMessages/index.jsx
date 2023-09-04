@@ -1,82 +1,81 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Grid, Typography } from '@mui/material';
+import { Button, Grid, Snackbar, Typography } from '@mui/material';
 
 const RandomMessages = () => {
-  const [messageCount, setMessageCount] = useState(0);
-  const [lastMessage, setLastMessage] = useState('');
-  const [timeUntilNextMessage, setTimeUntilNextMessage] = useState(0);
+  const [message, setMessage] = useState('');
+  const [messageHistory, setMessageHistory] = useState([]);
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState('');
 
-  useEffect(() => {
-    if (messageCount >= 4) {
-      const now = new Date();
-      const tomorrow = new Date(now);
-      tomorrow.setDate(now.getDate() + 1);
-      tomorrow.setHours(0, 0, 0, 0);
-      const timeRemaining = tomorrow - now;
+  const maxDailyAccess = 4;
+  const accessInterval = (24 * 60 * 60 * 1000) / maxDailyAccess;
 
-      setTimeUntilNextMessage(timeRemaining);
-    }
-  }, [messageCount]);
-
-  const handleGetRandomMessage = () => {
-    const newMessage = 'Mensagem aleatória gerada';
-    setLastMessage(newMessage);
-    setMessageCount(messageCount + 1);
+  const fetchRandomMessage = () => {
+    fetch('https://api.adviceslip.com/advice')
+      .then((response) => response.json())
+      .then((data) => {
+        setMessage(data.slip.advice);
+        setMessageHistory((prevHistory) => [data.slip.advice, ...prevHistory]);
+      })
+      .catch((error) => {
+        console.error('Erro ao buscar mensagem aleatória:', error);
+      });
   };
 
+  const handleRandomMessageClick = () => {
+    if (messageHistory.length >= maxDailyAccess) {
+      const nextAccessTime = new Date(
+        messageHistory[messageHistory.length - maxDailyAccess] + accessInterval,
+      );
+      const currentTime = new Date();
+      const remainingTime = new Date(nextAccessTime - currentTime);
+      const hours = remainingTime.getUTCHours();
+      const minutes = remainingTime.getUTCMinutes();
+      const seconds = remainingTime.getUTCSeconds();
+      setSnackbarMessage(
+        `Você atingiu o limite de mensagens diárias. Tempo restante para a próxima mensagem: ${hours}h ${minutes}m ${seconds}s`,
+      );
+      setOpenSnackbar(true);
+    } else {
+      fetchRandomMessage();
+    }
+  };
+
+  const handleCloseSnackbar = () => {
+    setOpenSnackbar(false);
+  };
+
+  useEffect(() => {
+    const resetMessageHistory = () => {
+      setMessageHistory([]);
+    };
+
+    const intervalId = setInterval(resetMessageHistory, 24 * 60 * 60 * 1000);
+
+    return () => {
+      clearInterval(intervalId);
+    };
+  }, []);
+
   return (
-    <Grid
-      container
-      direction="column"
-      alignItems="center"
-      justifyContent="center"
-      style={{ minHeight: '100vh' }}
-    >
-      <Grid item>
-        <Typography variant="h4" color="primary" gutterBottom>
-          Mensagens Aleatórias
-        </Typography>
-      </Grid>
-      <Grid item>
-        <Typography variant="body1" color="primary" paragraph>
-          {`Colaborador, você pode acessar "Mensagens Aleatórias"`}
-          {4 - messageCount} vezes hoje.
-        </Typography>
-        {timeUntilNextMessage > 0 ? (
-          <Typography variant="body1" color="primary" paragraph>
-            Você poderá acessar novamente em{' '}
-            {Math.ceil(timeUntilNextMessage / (1000 * 60 * 60))} horas.
-          </Typography>
-        ) : (
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={handleGetRandomMessage}
-          >
-            Obter Mensagem Aleatória
-          </Button>
-        )}
-      </Grid>
-      {lastMessage && (
-        <Grid item>
-          <Typography variant="body1" color="primary">
-            Última mensagem: {lastMessage}
-          </Typography>
-        </Grid>
-      )}
-      {timeUntilNextMessage > 0 && (
-        <Grid item>
-          <div className="notification">
-            <Typography variant="body1" color="error">
-              Você atingiu o limite diário de mensagens aleatórias.
-            </Typography>
-            <Typography variant="body1" color="error">
-              Tempo restante até a próxima mensagem:{' '}
-              {Math.ceil(timeUntilNextMessage / (1000 * 60 * 60))} horas.
-            </Typography>
-          </div>
-        </Grid>
-      )}
+    <Grid>
+      <Typography variant="h5" gutterBottom>
+        Mensagens Aleatórias
+      </Typography>
+      <Button variant="contained" onClick={handleRandomMessageClick}>
+        Obter Mensagem Aleatória
+      </Button>
+
+      <Typography variant="body1" style={{ marginTop: '16px' }}>
+        {message}
+      </Typography>
+
+      <Snackbar
+        open={openSnackbar}
+        autoHideDuration={5000}
+        onClose={handleCloseSnackbar}
+        message={snackbarMessage}
+      />
     </Grid>
   );
 };

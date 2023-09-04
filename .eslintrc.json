@@ -1,4 +1,8 @@
 {
+  "env": {
+    "browser": true,
+    "es2021": true
+  },
   "parser": "@babel/eslint-parser", // Certifique-se de que o pacote `@babel/eslint-parser` esteja instalado
   "parserOptions": {
     "ecmaFeatures": {

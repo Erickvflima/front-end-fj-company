@@ -12,7 +12,6 @@ export const postSignin = async (cpf) => {
   return response.data;
 };
 export const postSignup = async (payload) => {
-  // eslint-disable-next-line no-undef
   const queryParams = new URLSearchParams(payload).toString();
   const response = await api.post(`/${patch}/signup?${queryParams}`);
   return response.data;
