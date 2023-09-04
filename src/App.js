@@ -23,7 +23,8 @@ const App = () => {
   });
 
   useEffect(() => {
-    if (!signedRedux) {
+    // eslint-disable-next-line no-undef
+    if (!signedRedux && !window.location.pathname.includes('signup')) {
       navigate('/signin');
     }
   }, [signedRedux]);

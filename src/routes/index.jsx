@@ -45,6 +45,11 @@ const Signin = Loader(
     return import('../pages/Signin');
   }),
 );
+const Signup = Loader(
+  lazy(() => {
+    return import('../pages/Signup');
+  }),
+);
 
 const routes = [
   {
@@ -53,7 +58,6 @@ const routes = [
     component: <Layout />,
     isPrivate: false,
   },
-
   {
     path: '/RandomMessages',
     title: 'Mensagem Aleatorias',
@@ -83,6 +87,12 @@ const routes = [
     path: '/signin',
     title: 'Signin',
     component: <Signin />,
+    isPrivate: false,
+  },
+  {
+    path: '/signup',
+    title: 'Signup',
+    component: <Signup />,
     isPrivate: false,
   },
 ];

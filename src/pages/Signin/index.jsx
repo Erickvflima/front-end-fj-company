@@ -171,15 +171,8 @@ const Signin = () => {
 
                 <Grid container>
                   <Grid item xs>
-                    <Link
-                      href="#"
-                      variant="body2"
-                      onClick={() => {
-                        // eslint-disable-next-line no-undef
-                        console.log('teste');
-                      }}
-                    >
-                      Cadastrar usuario?
+                    <Link href="/signup" variant="body2">
+                      Cadastrar colaborador?
                     </Link>
                   </Grid>
                 </Grid>
