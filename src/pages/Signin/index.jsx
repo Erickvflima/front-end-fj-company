@@ -81,7 +81,11 @@ const Signin = () => {
 
   useEffect(() => {
     if (user && user.sendSignin?.document?.typeOfAccess?.length > 0) {
-      navigate('/', { replace: true });
+      if (user.sendSignin?.document?.typeOfAccess === 'Colaborador') {
+        navigate('/randomMessages', { replace: true });
+      } else {
+        navigate('/', { replace: true });
+      }
     }
   }, [user]);
 

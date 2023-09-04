@@ -24,6 +24,11 @@ const Home = Loader(
     return import('../pages/Home');
   }),
 );
+const RandomMessages = Loader(
+  lazy(() => {
+    return import('../pages/RandomMessages');
+  }),
+);
 const Dashboard = Loader(
   lazy(() => {
     return import('../pages/Dashboard');
@@ -48,6 +53,12 @@ const routes = [
     title: 'Home',
     component: <Home />,
     isPrivate: false,
+  },
+  {
+    path: '/randomMessages',
+    title: 'Mensagem Aleatorias',
+    component: <RandomMessages />,
+    isPrivate: true,
   },
   {
     path: '/dashboard',
