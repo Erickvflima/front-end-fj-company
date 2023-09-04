@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useFormik } from 'formik';
 import validationSchema from './validationSchema';
 import {
@@ -13,8 +13,25 @@ import {
 import Label from '../../components/Label';
 import { customTextColor } from '../../utils/colorText.js';
 import { maskCpf } from '../../utils/string/masks';
+import { listTeam } from '../../store/ducks/Team';
+import { useSnackbar } from 'notistack';
+import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { sendSignup } from '../../store/ducks/User';
 
 const Signup = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { enqueueSnackbar } = useSnackbar();
+
+  const [teams, setTeams] = useState([]);
+  useEffect(() => {
+    (async () => {
+      const { payload } = await dispatch(listTeam({ status: 'Ativo' }));
+      setTeams(payload.document);
+    })();
+  }, []);
+
   const formik = useFormik({
     initialValues: {
       name: '',
@@ -25,8 +42,22 @@ const Signup = () => {
     },
     validationSchema,
     onSubmit: async (values) => {
-      // eslint-disable-next-line no-undef
-      console.log(values);
+      const {
+        payload,
+        meta: { requestStatus },
+      } = await dispatch(sendSignup(values));
+      if (requestStatus === 'fulfilled' && payload.status === 'success') {
+        enqueueSnackbar('Usuario criado com sucesso!', {
+          variant: 'success',
+          autoHideDuration: 2000,
+        });
+        navigate('/signin', { replace: true });
+      } else {
+        enqueueSnackbar(payload.menssage, {
+          variant: 'success',
+          autoHideDuration: 2000,
+        });
+      }
     },
   });
 
@@ -127,12 +158,13 @@ const Signup = () => {
                       }
                       helperText={formik.touched.teamId && formik.errors.teamId}
                     >
-                      <MenuItem value="Comercial">
-                        <Typography variant="body2">Comercial</Typography>
-                      </MenuItem>
-                      <MenuItem value="Venda">
-                        <Typography variant="body2">Venda</Typography>
-                      </MenuItem>
+                      {teams.map((teamItem) => (
+                        <MenuItem key={teamItem.id} value={teamItem.id}>
+                          <Typography variant="body2">
+                            {teamItem.name}
+                          </Typography>
+                        </MenuItem>
+                      ))}
                     </TextField>
                   </Grid>
                   <Grid item>

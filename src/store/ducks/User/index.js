@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
-import { getList, postSignin } from './service';
+import { getList, postSignin, postSignup } from './service';
 
 export const listUser = createAsyncThunk(
   'user/list',
@@ -27,6 +27,18 @@ export const sendSignin = createAsyncThunk(
     }
   },
 );
+export const sendSignup = createAsyncThunk(
+  'user/signup',
+  async (payload, { rejectWithValue }) => {
+    try {
+      const data = await postSignup(payload);
+      return data;
+    } catch (error) {
+      const err = error;
+      return rejectWithValue(err.response?.data);
+    }
+  },
+);
 
 const initialState = {
   status: 'idle',
@@ -40,6 +52,7 @@ export const user = createSlice({
   reducers: {
     clearUser: (state) => {
       state.status = 'idle';
+      state.sendSignup = [];
       state.signed = false;
       state.sendSignin = {
         status: '',
@@ -60,6 +73,17 @@ export const user = createSlice({
         state.sendSignin = action.payload;
       })
       .addCase(sendSignin.rejected, (state) => {
+        state.status = 'failed';
+        state.signed = false;
+      })
+      .addCase(sendSignup.pending, (state) => {
+        state.status = 'loading';
+      })
+      .addCase(sendSignup.fulfilled, (state, action) => {
+        state.status = 'completed';
+        state.sendSignup = action.payload;
+      })
+      .addCase(sendSignup.rejected, (state) => {
         state.status = 'failed';
         state.signed = false;
       });

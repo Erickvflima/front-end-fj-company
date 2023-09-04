@@ -62,7 +62,6 @@ const Signin = () => {
       setOpen(true);
       const {
         meta: { requestStatus },
-        // payload,
       } = await dispatch(sendSignin(values.cpf));
       if (requestStatus === 'fulfilled') {
         enqueueSnackbar('Usuario logado com sucesso!', {
