@@ -21,6 +21,7 @@
     "clsx": "^2.0.0",
     "dayjs": "^1.11.9",
     "formik": "^2.4.3",
+    "mui-datatables": "^4.3.0",
     "mui-nested-menu-item": "^1.2.6",
     "notistack": "^3.0.1",
     "nprogress": "^0.2.0",
