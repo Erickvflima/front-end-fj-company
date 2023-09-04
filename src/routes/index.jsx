@@ -19,11 +19,6 @@ const Layout = Loader(
   }),
 );
 
-const Home = Loader(
-  lazy(() => {
-    return import('../pages/Home');
-  }),
-);
 const RandomMessages = Loader(
   lazy(() => {
     return import('../pages/RandomMessages');
@@ -44,11 +39,6 @@ const UserManagement = Loader(
     return import('../pages/UserManagement');
   }),
 );
-const Dashboard = Loader(
-  lazy(() => {
-    return import('../pages/Dashboard');
-  }),
-);
 
 const Signin = Loader(
   lazy(() => {
@@ -63,12 +53,7 @@ const routes = [
     component: <Layout />,
     isPrivate: false,
   },
-  {
-    path: '/home',
-    title: 'Home',
-    component: <Home />,
-    isPrivate: false,
-  },
+
   {
     path: '/RandomMessages',
     title: 'Mensagem Aleatorias',
@@ -93,12 +78,7 @@ const routes = [
     component: <UserManagement />,
     isPrivate: true,
   },
-  {
-    path: '/dashboard',
-    title: 'Dashboard',
-    component: <Dashboard />,
-    isPrivate: true,
-  },
+
   {
     path: '/signin',
     title: 'Signin',
