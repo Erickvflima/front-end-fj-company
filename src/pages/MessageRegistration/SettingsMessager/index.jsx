@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useFormik } from 'formik';
 import validationSchema from './validationSchema';
 import {
@@ -12,24 +12,94 @@ import {
 } from '@mui/material';
 import Label from '../../../components/Label';
 import { customTextColor } from '../../../utils/colorText.js';
+import {
+  changeMessage,
+  deleteMessageById,
+  newMessage,
+} from '../../../store/ducks/Message';
+import { useDispatch } from 'react-redux';
+import CustomBackDrop from '../../../components/CustomBackDrop';
+import { useSnackbar } from 'notistack';
 
-const EditMessager = ({ messageDocument, open, handleClose }) => {
+const SettingsMessager = ({ messageDocument, open, handleClose }) => {
+  const { enqueueSnackbar } = useSnackbar();
+  const dispatch = useDispatch();
+  const [openBackdrop, setOpenBackdrop] = useState(false);
   if (!messageDocument) {
     return null;
   }
 
   const formik = useFormik({
     initialValues: {
-      description: messageDocument.description,
+      id: messageDocument.id,
+      description: messageDocument.description || '',
       teamId: messageDocument.teamId,
-      status: messageDocument?.status,
+      status: messageDocument?.status || '',
     },
     validationSchema,
     onSubmit: async (values) => {
-      // eslint-disable-next-line no-undef
-      console.log(values);
+      if (formik.values.id) {
+        const {
+          payload,
+          meta: { requestStatus },
+        } = await dispatch(changeMessage(values));
+        setOpenBackdrop(true);
+        if (requestStatus === 'fulfilled' && payload.status === 'success') {
+          handleClose();
+          enqueueSnackbar('Mensagem alterada com sucesso', {
+            variant: 'success',
+            autoHideDuration: 2000,
+          });
+          setOpenBackdrop(false);
+        } else {
+          enqueueSnackbar('Erro ao alterar mensagem.', {
+            variant: 'error',
+            autoHideDuration: 2000,
+          });
+        }
+      } else {
+        const {
+          payload,
+          meta: { requestStatus },
+        } = await dispatch(newMessage(values));
+        setOpenBackdrop(true);
+        if (requestStatus === 'fulfilled' && payload.status === 'success') {
+          handleClose();
+          enqueueSnackbar('Mensagem alterada com sucesso', {
+            variant: 'success',
+            autoHideDuration: 2000,
+          });
+          setOpenBackdrop(false);
+        } else {
+          enqueueSnackbar('Erro ao alterar mensagem.', {
+            variant: 'error',
+            autoHideDuration: 2000,
+          });
+        }
+      }
     },
   });
+
+  const handleDelete = async () => {
+    const {
+      payload,
+      meta: { requestStatus },
+    } = await dispatch(deleteMessageById({ id: formik.values.id }));
+    setOpenBackdrop(true);
+    if (requestStatus === 'fulfilled' && payload.status === 'success') {
+      handleClose();
+      enqueueSnackbar('Mensagem deletada com sucesso', {
+        variant: 'success',
+        autoHideDuration: 2000,
+      });
+      setOpenBackdrop(false);
+    } else {
+      enqueueSnackbar('Erro ao deletar mensagem.', {
+        variant: 'error',
+        autoHideDuration: 2000,
+      });
+    }
+  };
 
   return (
     <Modal
@@ -39,6 +109,7 @@ const EditMessager = ({ messageDocument, open, handleClose }) => {
       aria-describedby="modal-edit-description"
     >
       <Grid container justifyContent="center" alignItems="center" margin={2}>
+        <CustomBackDrop open={openBackdrop} />
         <Paper elevation={3}>
           <Grid item xs={12}>
             <Grid container direction="column" padding={3} alignItems="center">
@@ -106,6 +177,7 @@ const EditMessager = ({ messageDocument, open, handleClose }) => {
                             variant="outlined"
                             color="primary"
                             sx={{ mt: 3, mb: 2 }}
+                            onClick={handleDelete}
                           >
                             excluir
                           </Button>
@@ -118,7 +190,7 @@ const EditMessager = ({ messageDocument, open, handleClose }) => {
                             color="primary"
                             sx={{ mt: 3, mb: 2 }}
                           >
-                            Alterar
+                            {formik.values.id ? 'Alterar' : 'Inserir'}
                           </Button>
                         </Grid>
                       </Grid>
@@ -134,4 +206,4 @@ const EditMessager = ({ messageDocument, open, handleClose }) => {
   );
 };
 
-export default EditMessager;
+export default SettingsMessager;

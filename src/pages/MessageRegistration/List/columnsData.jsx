@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 import { Box, IconButton, Typography } from '@mui/material';
 import { customTextColor } from '../../../utils/colorText';
 import Label from '../../../components/Label';
-import EditMessager from '../EditMessager';
+import SettingsMessager from '../SettingsMessager';
 import { Edit } from '@mui/icons-material';
 
-const getColumns = (customrParams) => {
+const getColumns = (customrParams, handleRefesh) => {
   const colunsData = [
     {
       name: 'description',
@@ -62,19 +62,19 @@ const getColumns = (customrParams) => {
         },
         customBodyRenderLite: (dataindex) => {
           const dataRow = customrParams ? customrParams[dataindex] : 0;
-          // eslint-disable-next-line no-undef
-          console.log(dataRow);
+
           const [open, setOpen] = useState(false);
           const handleOpenModal = () => {
             setOpen(true);
           };
 
           const handleCloseModal = () => {
+            handleRefesh();
             setOpen(false);
           };
           return (
             <>
-              <EditMessager
+              <SettingsMessager
                 messageDocument={dataRow}
                 handleClose={handleCloseModal}
                 open={open}
