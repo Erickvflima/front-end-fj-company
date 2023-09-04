@@ -12,7 +12,7 @@ const Footer = () => {
       sx={{
         borderRadius: '0px',
         width: '100%',
-        padding: '50px',
+        padding: '20px',
         marginTop: '10px',
         height: '130px',
       }}

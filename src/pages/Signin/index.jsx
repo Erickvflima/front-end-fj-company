@@ -23,6 +23,7 @@ import CustomBackDrop from '../../components/CustomBackDrop';
 import { useNavigate } from 'react-router-dom';
 import validationSchema from './validationSchema';
 import { sendSignin } from '../../store/ducks/User';
+import { maskCpf } from '../../utils/string/masks';
 
 const Copyright = (props) => {
   return (
@@ -79,7 +80,7 @@ const Signin = () => {
   });
 
   useEffect(() => {
-    if (user.sendSignin?.document?.typeOfAccess.length > 0) {
+    if (user && user.sendSignin?.document?.typeOfAccess?.length > 0) {
       navigate('/', { replace: true });
     }
   }, [user]);
@@ -100,6 +101,7 @@ const Signin = () => {
           lg={7}
           sx={{
             backgroundImage: `url(${logo})`,
+            backgroundSize: '200px',
             backgroundRepeat: 'no-repeat',
             backgroundColor: '#004668',
             backgroundPosition: 'center',
@@ -130,18 +132,24 @@ const Signin = () => {
             <Typography component="h1" variant="h5">
               Login
             </Typography>
-            <Box sx={{ mt: 1 }}>
+            <Box sx={{ mt: 1, maxWidth: '280px' }}>
               <form onSubmit={formik.handleSubmit}>
                 <TextField
                   margin="normal"
                   required
                   fullWidth
                   id="cpf"
-                  label="cpf"
+                  label="CPF"
                   name="cpf"
+                  inputProps={{ maxLength: 14 }}
                   autoFocus
-                  value={formik.values.cpf}
-                  onChange={formik.handleChange}
+                  value={maskCpf(formik.values.cpf)}
+                  onChange={async (event) => {
+                    formik.setFieldValue(
+                      'cpf',
+                      event.target.value.replace(/\D/g, ''),
+                    );
+                  }}
                   onBlur={formik.handleBlur}
                   error={formik.touched.cpf && Boolean(formik.errors.cpf)}
                   helperText={formik.touched.cpf && formik.errors.cpf}

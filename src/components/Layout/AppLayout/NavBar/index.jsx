@@ -18,7 +18,7 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import { v4 as uuidv4 } from 'uuid';
 import { Stack } from '@mui/system';
 import FakePage from '../../../../pages/FakePage';
-// import logo from 'assets/images/logo_clara.png';
+import logo from '../../../../assets/images/logo.png';
 import routes from '../../../../routes';
 import Footer from '../../../Footer';
 import NavItem from './NavItem';
@@ -80,8 +80,6 @@ const DrawerHeader = styled('div')(({ theme }) => {
 });
 
 const ResponsiveDrawer = () => {
-  // eslint-disable-next-line no-undef
-  console.log('aquiii');
   const theme = useTheme();
   const [open, setOpen] = useState(true);
 
@@ -169,12 +167,7 @@ const ResponsiveDrawer = () => {
             sx={{ width: '100%' }}
           >
             <Box padding={3}>
-              logo
-              {/* <img
-                alt="Logo"
-                src={logo}
-                style={{ width: '100px', marginLeft: '15px' }}
-              /> */}
+              <img alt="Logo" src={logo} style={{ width: '150px' }} />
             </Box>
             <Box paddingTop={3}>
               <IconButton onClick={handleDrawerClose}>
@@ -201,15 +194,7 @@ const ResponsiveDrawer = () => {
         >
           <Grid item xs={12}>
             <Routes>
-              {
-                // eslint-disable-next-line no-undef
-                console.log('aquiii')
-              }
               {routes.map(({ isPrivate, path, component: Component }) => {
-                // eslint-disable-next-line no-undef
-                console.log(routes);
-                // eslint-disable-next-line no-undef
-                console.log(isPrivate);
                 if (isPrivate) {
                   return (
                     <Route path={path} element={Component} key={uuidv4()} />

@@ -37,7 +37,20 @@ const initialState = {
 export const user = createSlice({
   name: 'user',
   initialState,
-  reducers: {},
+  reducers: {
+    clearUser: (state) => {
+      // eslint-disable-next-line no-undef
+      console.log(state);
+      state.status = 'idle';
+      state.signed = false;
+      state.sendSignin = {
+        status: '',
+        message: '',
+        token: '',
+        document: '',
+      };
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(sendSignin.pending, (state) => {
@@ -54,5 +67,5 @@ export const user = createSlice({
       });
   },
 });
-
+export const { clearUser } = user.actions;
 export default user.reducer;

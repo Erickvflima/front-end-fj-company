@@ -9,18 +9,21 @@ import {
 } from '@mui/material';
 import { Logout, Person } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
+import { clearUser } from '../../../../../store/ducks/User';
+import { useDispatch, useSelector } from 'react-redux';
 // import { useAppDispatch, useAppSelector } from 'hooks/useAppStore';
 // import { clearSignin } from '../../store/ducks/Signer';
 // import { clearGroupAndPermissions } from 'store/ducks/Groups';
 
 const MenuOptions = () => {
   const navigate = useNavigate();
-  // const dispatch = useAppDispatch();
-  // const { user } = useAppSelector((state) => {
-  //   return state.signer.signin;
-  // });
+  const dispatch = useDispatch();
+  const { user } = useSelector((state) => {
+    return state;
+  });
   const [anchorEl, setAnchorEl] = useState(null);
-
+  // eslint-disable-next-line no-undef
+  console.log(user);
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -30,8 +33,7 @@ const MenuOptions = () => {
   };
 
   const handleLogOut = () => {
-    // dispatch(clearSignin());
-    // dispatch(clearGroupAndPermissions());
+    dispatch(clearUser());
     handleClose();
     navigate('/signin');
   };
@@ -73,7 +75,7 @@ const MenuOptions = () => {
           <ListItemIcon>
             <Person fontSize="small" color="primary" />
           </ListItemIcon>
-          teste
+          {user.sendSignin.document.name}
         </MenuItem>
         <MenuItem onClick={handleLogOut}>
           <ListItemIcon>
