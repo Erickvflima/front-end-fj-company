@@ -30,19 +30,20 @@ const SettingsMessager = ({ messageDocument, open, handleClose }) => {
   }
 
   useEffect(() => {
-    console.log(formik.isValid);
     if (!open) {
       formik.resetForm();
     }
   }, [open]);
 
+  const initialValues = {
+    id: messageDocument.id || null,
+    description: messageDocument.description || null,
+    teamId: messageDocument.teamId || null,
+    status: messageDocument?.status || null,
+  };
+
   const formik = useFormik({
-    initialValues: {
-      id: messageDocument.id,
-      description: messageDocument.description || '',
-      teamId: messageDocument.teamId,
-      status: messageDocument?.status || '',
-    },
+    initialValues: initialValues,
     validationSchema,
     onSubmit: async (values) => {
       if (formik.values.id) {
@@ -192,7 +193,7 @@ const SettingsMessager = ({ messageDocument, open, handleClose }) => {
                             color="primary"
                             sx={{ mt: 3, mb: 2 }}
                             onClick={handleDelete}
-                            disabled={!formik.isValid}
+                            disabled={!formik.values.id}
                           >
                             excluir
                           </Button>
@@ -200,7 +201,10 @@ const SettingsMessager = ({ messageDocument, open, handleClose }) => {
                         <Grid item>
                           <Button
                             type="submit"
-                            disabled={!formik.isValid}
+                            disabled={
+                              !formik.values.description ||
+                              !formik.values.status
+                            }
                             fullWidth
                             variant="contained"
                             color="primary"
