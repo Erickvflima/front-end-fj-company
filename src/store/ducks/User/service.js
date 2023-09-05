@@ -8,6 +8,7 @@ export const getList = async () => {
 
 export const postSignin = async (cpf) => {
   const response = await api.post(`/${patch}/signin?cpf=${cpf}`);
+  localStorage.setItem('token', response.data.token);
   api.defaults.headers.common.Authorization = `Bearer ${response.data.token}`;
   return response.data;
 };

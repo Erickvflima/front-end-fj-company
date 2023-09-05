@@ -1,81 +1,94 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Grid, Snackbar, Typography } from '@mui/material';
+import { Grid, Typography, Paper } from '@mui/material';
+import { randomMessage } from '../../store/ducks/Message';
+import { useSnackbar } from 'notistack';
+import CustomBackDrop from '../../components/CustomBackDrop';
+import CountdownTimer from '../../components/CountdownTimer';
+import { useDispatch, useSelector } from 'react-redux';
 
 const RandomMessages = () => {
-  const [message, setMessage] = useState('');
-  const [messageHistory, setMessageHistory] = useState([]);
-  const [openSnackbar, setOpenSnackbar] = useState(false);
-  const [snackbarMessage, setSnackbarMessage] = useState('');
-
-  const maxDailyAccess = 4;
-  const accessInterval = (24 * 60 * 60 * 1000) / maxDailyAccess;
-
-  const fetchRandomMessage = () => {
-    fetch('https://api.adviceslip.com/advice')
-      .then((response) => response.json())
-      .then((data) => {
-        setMessage(data.slip.advice);
-        setMessageHistory((prevHistory) => [data.slip.advice, ...prevHistory]);
-      })
-      .catch((error) => {
-        console.error('Erro ao buscar mensagem aleatória:', error);
-      });
-  };
-
-  const handleRandomMessageClick = () => {
-    if (messageHistory.length >= maxDailyAccess) {
-      const nextAccessTime = new Date(
-        messageHistory[messageHistory.length - maxDailyAccess] + accessInterval,
-      );
-      const currentTime = new Date();
-      const remainingTime = new Date(nextAccessTime - currentTime);
-      const hours = remainingTime.getUTCHours();
-      const minutes = remainingTime.getUTCMinutes();
-      const seconds = remainingTime.getUTCSeconds();
-      setSnackbarMessage(
-        `Você atingiu o limite de mensagens diárias. Tempo restante para a próxima mensagem: ${hours}h ${minutes}m ${seconds}s`,
-      );
-      setOpenSnackbar(true);
-    } else {
-      fetchRandomMessage();
-    }
-  };
-
-  const handleCloseSnackbar = () => {
-    setOpenSnackbar(false);
-  };
+  const { enqueueSnackbar } = useSnackbar();
+  const {
+    user: { sendSignin },
+  } = useSelector((state) => {
+    return state;
+  });
+  const dispatch = useDispatch();
+  const [openBackdrop, setOpenBackdrop] = useState(false);
+  const [currentMessage, setCurrentMessage] = useState('');
+  const showMessage = false;
 
   useEffect(() => {
-    const resetMessageHistory = () => {
-      setMessageHistory([]);
-    };
-
-    const intervalId = setInterval(resetMessageHistory, 24 * 60 * 60 * 1000);
-
-    return () => {
-      clearInterval(intervalId);
-    };
+    (async () => {
+      setOpenBackdrop(true);
+      const {
+        payload,
+        meta: { requestStatus },
+      } = await dispatch(randomMessage({ id: sendSignin.document.id }));
+      if (requestStatus === 'fulfilled' && payload.status === 'success') {
+        setOpenBackdrop(false);
+        setCurrentMessage(payload.message);
+      } else {
+        enqueueSnackbar('Erro ao buscar menssage', {
+          variant: 'error',
+          autoHideDuration: 2000,
+        });
+      }
+      setOpenBackdrop(false);
+    })();
   }, []);
 
   return (
-    <Grid>
-      <Typography variant="h5" gutterBottom>
-        Mensagens Aleatórias
-      </Typography>
-      <Button variant="contained" onClick={handleRandomMessageClick}>
-        Obter Mensagem Aleatória
-      </Button>
-
-      <Typography variant="body1" style={{ marginTop: '16px' }}>
-        {message}
-      </Typography>
-
-      <Snackbar
-        open={openSnackbar}
-        autoHideDuration={5000}
-        onClose={handleCloseSnackbar}
-        message={snackbarMessage}
-      />
+    <Grid
+      container
+      direction="column"
+      alignItems="center"
+      justifyContent="center"
+      style={{ minHeight: '80vh' }}
+      spacing={6}
+    >
+      <Grid item>
+        <Typography variant="h4" color="primary" gutterBottom>
+          Mensagen da sorte
+        </Typography>
+      </Grid>
+      <Grid item>
+        <Paper elevation={3}>
+          <CustomBackDrop open={openBackdrop} />
+          <Grid item xs={12}>
+            <Grid container direction="column" padding={3} alignItems="center">
+              <Grid item>
+                <Grid
+                  container
+                  direction="column"
+                  padding={3}
+                  alignItems="center"
+                  spacing={2}
+                >
+                  {showMessage ? (
+                    <Grid item>
+                      <Typography variant="h5" color="primary">
+                        {currentMessage}
+                      </Typography>
+                    </Grid>
+                  ) : (
+                    <Grid container direction="column" spacing={2}>
+                      <Grid item>
+                        <Typography variant="h5" color="primary">
+                          Limite de mensagens atingida!
+                        </Typography>
+                      </Grid>
+                      <Grid item>
+                        <CountdownTimer targetDateTime={new Date()} />
+                      </Grid>
+                    </Grid>
+                  )}
+                </Grid>
+              </Grid>
+            </Grid>
+          </Grid>
+        </Paper>
+      </Grid>
     </Grid>
   );
 };

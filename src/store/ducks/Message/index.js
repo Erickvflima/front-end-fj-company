@@ -1,12 +1,31 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
-import { deleteMessage, getList, postMessage, putMessage } from './service';
+import {
+  deleteMessage,
+  getList,
+  getRandomMessage,
+  postMessage,
+  putMessage,
+} from './service';
 
 export const listMessage = createAsyncThunk(
   'message/list',
   async (payload, { rejectWithValue }) => {
     try {
       const data = await getList(payload);
+      return data;
+    } catch (error) {
+      const err = error;
+      return rejectWithValue(err.response?.data);
+    }
+  },
+);
+
+export const randomMessage = createAsyncThunk(
+  'message/list',
+  async (id, { rejectWithValue }) => {
+    try {
+      const data = await getRandomMessage(id);
       return data;
     } catch (error) {
       const err = error;

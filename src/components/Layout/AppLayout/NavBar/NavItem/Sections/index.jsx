@@ -45,7 +45,9 @@ const Sections = () => {
       href: '/teamMessages',
       open: true,
       icon: Person,
-      isVisible: sendSignin.document.typeOfAccess === 'Lider',
+      isVisible:
+        sendSignin.document.typeOfAccess === 'Lider' ||
+        sendSignin.document.typeOfAccess === 'Colaborador',
     },
     {
       subheader: 'messageRegistration',

@@ -23,3 +23,8 @@ export const deleteMessage = async (payload) => {
   const response = await api.delete(`/${patch}/`, { params: payload });
   return response.data;
 };
+
+export const getRandomMessage = async (id) => {
+  const response = await api.get(`/${patch}/randomMessage`, { params: id });
+  return response.data;
+};
