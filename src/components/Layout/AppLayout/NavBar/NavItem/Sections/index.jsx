@@ -4,6 +4,7 @@ import NestedMenuItem from 'mui-nested-menu-item';
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
+import { Article, Person } from '@mui/icons-material';
 import { ArrowRight, ExpandLess, ExpandMore } from '@mui/icons-material';
 import {
   Collapse,
@@ -17,11 +18,54 @@ import {
   ListItemButton,
 } from '@mui/material';
 import { Box } from '@mui/system';
-import sections from '../../../../../../menus';
+import { useSelector } from 'react-redux';
+// import sections from '../../../../../../menus';
 
 const Sections = () => {
   const navigate = useNavigate();
-
+  const {
+    user: { sendSignin },
+  } = useSelector((state) => {
+    return state;
+  });
+  const sections = [
+    {
+      subheader: 'randomMessages',
+      section: 'randomMessages',
+      label: 'Mensagens Aleatórias',
+      href: '/randomMessages',
+      open: true,
+      icon: Article,
+      isVisible: sendSignin.document.typeOfAccess === 'Colaborador',
+    },
+    {
+      subheader: 'teamMessages',
+      section: 'teamMessages',
+      label: 'Mensagens da Equipe',
+      href: '/teamMessages',
+      open: true,
+      icon: Person,
+      isVisible: sendSignin.document.typeOfAccess === 'Lider',
+    },
+    {
+      subheader: 'messageRegistration',
+      section: 'messageRegistration',
+      label: 'Cadastro de Mensagens',
+      href: '/messageRegistration',
+      open: true,
+      icon: Person,
+      isVisible: sendSignin.document.typeOfAccess === 'Lider',
+    },
+    {
+      subheader: 'userManagement',
+      section: 'userManagement',
+      label: 'Usuários',
+      href: '/userManagement',
+      open: true,
+      icon: Person,
+      isVisible: sendSignin.document.typeOfAccess === 'Administrador',
+    },
+  ];
   // eslint-disable-next-line no-unused-vars
   const [_, setCurrentSections] = useState(sections);
   const [currentAnchorEl, setCurrentAnchorEl] = useState([]);
