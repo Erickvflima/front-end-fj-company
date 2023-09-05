@@ -167,10 +167,10 @@ const Signup = () => {
                           formik.touched.teamId && Boolean(formik.errors.teamId)
                         }
                         helperText={
-                          formik.touched.teamId && formik.errors.teamId
+                          formik.touched?.teamId && formik.errors.teamId
                         }
                       >
-                        {teams.map((teamItem) => (
+                        {teams?.map((teamItem) => (
                           <MenuItem key={teamItem.id} value={teamItem.id}>
                             <Typography variant="body2">
                               {teamItem.name}
