@@ -41,7 +41,6 @@ const MenuOptions = () => {
         size="large"
         edge="end"
         aria-label="account of current user"
-        // aria-controls={menuId}
         aria-haspopup="true"
         onClick={handleMenu}
         color="inherit"
