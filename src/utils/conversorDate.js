@@ -14,3 +14,11 @@ export const maskDateTimeStamp = (date, dateFormat = 'pt-BR') => {
     return String(date);
   }
 };
+
+export const formateDateEn = (data) => {
+  const year = data.getFullYear();
+  const month = String(data.getMonth() + 1).padStart(2, '0'); // Os meses começam em 0 (janeiro)
+  const day = String(data.getDate() + 1).padStart(2, '0');
+
+  return `${year}-${month}-${day}`;
+};

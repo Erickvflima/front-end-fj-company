@@ -5,6 +5,7 @@ import { useSnackbar } from 'notistack';
 import CustomBackDrop from '../../components/CustomBackDrop';
 import CountdownTimer from '../../components/CountdownTimer';
 import { useDispatch, useSelector } from 'react-redux';
+import { formateDateEn } from '../../utils/conversorDate';
 
 const RandomMessages = () => {
   const { enqueueSnackbar } = useSnackbar();
@@ -16,7 +17,7 @@ const RandomMessages = () => {
   const dispatch = useDispatch();
   const [openBackdrop, setOpenBackdrop] = useState(false);
   const [currentMessage, setCurrentMessage] = useState('');
-  const showMessage = true;
+  const [showMessage, setShowMessage] = useState(true);
 
   useEffect(() => {
     (async () => {
@@ -24,10 +25,22 @@ const RandomMessages = () => {
       const {
         payload,
         meta: { requestStatus },
-      } = await dispatch(randomMessage({ id: sendSignin.document.id }));
+      } = await dispatch(
+        randomMessage({
+          id: sendSignin.document.id,
+          date: formateDateEn(new Date()),
+        }),
+      );
       if (requestStatus === 'fulfilled' && payload.status === 'success') {
         setOpenBackdrop(false);
-        setCurrentMessage(payload.message);
+        if (
+          payload.message === 'quantidade de menssagens por dia ja esgotado.'
+        ) {
+          setShowMessage(false);
+        } else {
+          setShowMessage(true);
+          setCurrentMessage(payload.document);
+        }
       } else {
         enqueueSnackbar('Erro ao buscar menssage', {
           variant: 'error',
@@ -76,12 +89,12 @@ const RandomMessages = () => {
                       >
                         <Grid item>
                           <Typography variant="h6" color="primary">
-                            {currentMessage}
+                            {currentMessage.ptBr}
                           </Typography>
                         </Grid>
                         <Grid item>
                           <Typography variant="body1" color="primary">
-                            {currentMessage}
+                            {currentMessage.en}
                           </Typography>
                         </Grid>
                       </Grid>

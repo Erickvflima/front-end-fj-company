@@ -18,9 +18,8 @@ const CountdownTimer = ({ targetDateTime }) => {
     const now = new Date();
     const targetDate = new Date(targetDateTime);
 
-    // Verifique se a data alvo é no futuro
     if (targetDate <= now) {
-      targetDate.setDate(targetDate.getDate() + 1); // Avance para o próximo dia
+      targetDate.setDate(targetDate.getDate() + 1);
     }
 
     const timeDiff = targetDate - now;

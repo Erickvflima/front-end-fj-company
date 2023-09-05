@@ -19,7 +19,6 @@ import {
 } from '@mui/material';
 import { Box } from '@mui/system';
 import { useSelector } from 'react-redux';
-// import sections from '../../../../../../menus';
 
 const Sections = () => {
   const navigate = useNavigate();

@@ -16,23 +16,21 @@ const container = document.getElementById('app');
 const root = createRoot(container);
 
 root.render(
-  <React.StrictMode>
-    <HelmetProvider>
-      <BrowserRouter>
-        <Provider store={store}>
-          <PersistGate loading={null} persistor={persistor}>
-            <SnackbarProvider
-              maxSnack={3}
-              anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-            >
-              <App />
-            </SnackbarProvider>
-          </PersistGate>
-        </Provider>
-      </BrowserRouter>
-    </HelmetProvider>
-  </React.StrictMode>,
+  <HelmetProvider>
+    <BrowserRouter>
+      <Provider store={store}>
+        <PersistGate loading={null} persistor={persistor}>
+          <SnackbarProvider
+            maxSnack={3}
+            anchorOrigin={{
+              vertical: 'top',
+              horizontal: 'right',
+            }}
+          >
+            <App />
+          </SnackbarProvider>
+        </PersistGate>
+      </Provider>
+    </BrowserRouter>
+  </HelmetProvider>,
 );
