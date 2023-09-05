@@ -16,7 +16,7 @@ const RandomMessages = () => {
   const dispatch = useDispatch();
   const [openBackdrop, setOpenBackdrop] = useState(false);
   const [currentMessage, setCurrentMessage] = useState('');
-  const showMessage = false;
+  const showMessage = true;
 
   useEffect(() => {
     (async () => {
@@ -67,9 +67,24 @@ const RandomMessages = () => {
                 >
                   {showMessage ? (
                     <Grid item>
-                      <Typography variant="h5" color="primary">
-                        {currentMessage}
-                      </Typography>
+                      <Grid
+                        container
+                        direction="column"
+                        alignItems="center"
+                        sx={{ maxWidth: '500px' }}
+                        spacing={2}
+                      >
+                        <Grid item>
+                          <Typography variant="h6" color="primary">
+                            {currentMessage}
+                          </Typography>
+                        </Grid>
+                        <Grid item>
+                          <Typography variant="body1" color="primary">
+                            {currentMessage}
+                          </Typography>
+                        </Grid>
+                      </Grid>
                     </Grid>
                   ) : (
                     <Grid container direction="column" spacing={2}>
