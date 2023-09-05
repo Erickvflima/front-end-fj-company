@@ -1,17 +1,15 @@
 /* eslint-disable prettier/prettier */
 import React, { useEffect, useState } from 'react';
 import {
-  Avatar,
   Divider,
   Grid,
   List,
   ListItem,
-  ListItemAvatar,
   ListItemText,
   Paper,
   Typography,
 } from '@mui/material';
-import { stringAvatar } from '../../utils/stringAvatar';
+
 import { maskDateTimeStamp } from '../../utils/conversorDate';
 import { useDispatch, useSelector } from 'react-redux';
 import { listMessage } from '../../store/ducks/Message';
@@ -34,7 +32,9 @@ const TeamMessages = () => {
       const {
         payload,
         meta: { requestStatus },
-      } = await dispatch(listMessage({ teamId: sendSignin.document.teamId }));
+      } = await dispatch(
+        listMessage({ teamId: sendSignin.document.teamId, status: 'Ativo' }),
+      );
       if (
         requestStatus === 'fulfilled' &&
         payload.status === 'success' &&
@@ -97,11 +97,6 @@ const TeamMessages = () => {
                               transition: 'transform 0.2s ease',
                             }}
                           >
-                            <ListItemAvatar>
-                              <Avatar color="primary">
-                                {stringAvatar(data.nameUser)}
-                              </Avatar>
-                            </ListItemAvatar>
                             <ListItemText
                               primary={
                                 <Typography
@@ -129,13 +124,23 @@ const TeamMessages = () => {
                     })}
                   </List>
                 ) : (
-                  <Grid container>
-                    <Typography variant="h4">
-                      Não possui menssagens cadastrado no momento!
-                    </Typography>
-                    <Typography variant="body2">
-                      Solicite ao líder da equipe o cadastro de uma mensagem.
-                    </Typography>
+                  <Grid
+                    container
+                    direction="column"
+                    padding={3}
+                    alignItems="center"
+                    spacing={2}
+                  >
+                    <Grid item>
+                      <Typography variant="h5" color="primary">
+                        Não possui menssagens cadastrado no momento!
+                      </Typography>
+                    </Grid>
+                    <Grid item>
+                      <Typography variant="body2">
+                        Solicite ao líder da equipe o cadastro de uma mensagem.
+                      </Typography>
+                    </Grid>
                   </Grid>
                 )}
               </Grid>

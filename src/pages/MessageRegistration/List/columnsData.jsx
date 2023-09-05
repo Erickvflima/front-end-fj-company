@@ -69,8 +69,9 @@ const getColumns = (customrParams, handleRefesh) => {
           };
 
           const handleCloseModal = () => {
-            handleRefesh();
+            console.log('teste');
             setOpen(false);
+            handleRefesh();
           };
           return (
             <>

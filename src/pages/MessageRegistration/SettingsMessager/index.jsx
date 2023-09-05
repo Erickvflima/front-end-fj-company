@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useFormik } from 'formik';
 import validationSchema from './validationSchema';
 import {
@@ -28,6 +28,13 @@ const SettingsMessager = ({ messageDocument, open, handleClose }) => {
   if (!messageDocument) {
     return null;
   }
+
+  useEffect(() => {
+    console.log(formik.isValid);
+    if (!open) {
+      formik.resetForm();
+    }
+  }, [open]);
 
   const formik = useFormik({
     initialValues: {
@@ -107,11 +114,18 @@ const SettingsMessager = ({ messageDocument, open, handleClose }) => {
       onClose={handleClose}
       aria-labelledby="modal-edit-title"
       aria-describedby="modal-edit-description"
+      sx={{
+        maxWidth: '405px',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        margin: 'auto',
+      }}
     >
-      <Grid container justifyContent="center" alignItems="center" margin={2}>
-        <CustomBackDrop open={openBackdrop} />
-        <Paper elevation={3}>
-          <Grid item xs={12}>
+      <Grid container>
+        <Grid item>
+          <CustomBackDrop open={openBackdrop} />
+          <Paper elevation={3}>
             <Grid container direction="column" padding={3} alignItems="center">
               <form onSubmit={formik.handleSubmit}>
                 <Grid item>
@@ -178,6 +192,7 @@ const SettingsMessager = ({ messageDocument, open, handleClose }) => {
                             color="primary"
                             sx={{ mt: 3, mb: 2 }}
                             onClick={handleDelete}
+                            disabled={!formik.isValid}
                           >
                             excluir
                           </Button>
@@ -185,6 +200,7 @@ const SettingsMessager = ({ messageDocument, open, handleClose }) => {
                         <Grid item>
                           <Button
                             type="submit"
+                            disabled={!formik.isValid}
                             fullWidth
                             variant="contained"
                             color="primary"
@@ -199,8 +215,8 @@ const SettingsMessager = ({ messageDocument, open, handleClose }) => {
                 </Grid>
               </form>
             </Grid>
-          </Grid>
-        </Paper>
+          </Paper>
+        </Grid>
       </Grid>
     </Modal>
   );
