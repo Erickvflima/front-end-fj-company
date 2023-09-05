@@ -2,23 +2,39 @@ import React, { useState } from 'react';
 import { Box, IconButton, Typography } from '@mui/material';
 import { customTextColor } from '../../../utils/colorText';
 import Label from '../../../components/Label';
-import SettingsMessager from '../SettingsMessager';
-import { Edit } from '@mui/icons-material';
+import SettingsUser from '../SettingsUser';
+import { ManageAccounts } from '@mui/icons-material';
+import { maskCpf } from '../../../utils/string/masks';
 
 const getColumns = (customrParams, handleRefesh) => {
   const colunsData = [
     {
-      name: 'description',
-      label: 'Descrição da Mensagem',
+      name: 'name',
+      label: 'Nome',
       options: {
         filter: false,
-        customHeadLabelRender({ label }) {
-          return (
-            <Box sx={{ width: { xs: 'auto', md: '250px', sm: '330px' } }}>
-              {label}
-            </Box>
-          );
+
+        setCellProps() {
+          return { align: 'center' };
         },
+      },
+    },
+    {
+      name: 'cpf',
+      label: 'CPF',
+      options: {
+        filter: false,
+        customBodyRender: maskCpf,
+        setCellProps() {
+          return { align: 'center' };
+        },
+      },
+    },
+    {
+      name: 'typeOfAccess',
+      label: 'Tipo de Acesso',
+      options: {
+        filter: false,
         setCellProps() {
           return { align: 'center' };
         },
@@ -74,14 +90,14 @@ const getColumns = (customrParams, handleRefesh) => {
           };
           return (
             <>
-              <SettingsMessager
-                messageDocument={dataRow}
+              <SettingsUser
+                data={dataRow}
                 handleClose={handleCloseModal}
                 open={open}
               />
               <Box sx={{ width: { sm: '80px' } }}>
                 <IconButton aria-label="editar" onClick={handleOpenModal}>
-                  <Edit />
+                  <ManageAccounts />
                 </IconButton>
               </Box>
             </>
