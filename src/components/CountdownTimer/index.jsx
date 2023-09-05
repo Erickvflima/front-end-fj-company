@@ -1,7 +1,8 @@
 import { Grid, Typography } from '@mui/material';
 import React, { useState, useEffect } from 'react';
+import { formateDateNewDate } from '../../utils/conversorDate';
 
-const CountdownTimer = ({ targetDateTime }) => {
+const CountdownTimer = () => {
   const [timeRemaining, setTimeRemaining] = useState(calculateTimeRemaining());
 
   useEffect(() => {
@@ -15,17 +16,12 @@ const CountdownTimer = ({ targetDateTime }) => {
   }, []);
 
   function calculateTimeRemaining() {
-    const now = new Date();
-    const targetDate = new Date(targetDateTime);
+    const now = formateDateNewDate(new Date());
+    const referenceDate = `${now}T23:59:59`;
 
-    if (targetDate <= now) {
-      targetDate.setDate(targetDate.getDate() + 1);
-    }
+    const timeDiff = new Date(referenceDate) - new Date();
 
-    const timeDiff = targetDate - now;
-    const hours = Math.floor(
-      (timeDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60),
-    );
+    const hours = Math.floor(timeDiff / (1000 * 60 * 60));
     const minutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
     const seconds = Math.floor((timeDiff % (1000 * 60)) / 1000);
 

@@ -66,8 +66,8 @@ const RandomMessages = () => {
         </Typography>
       </Grid>
       <Grid item>
+        <CustomBackDrop open={openBackdrop} />
         <Paper elevation={3}>
-          <CustomBackDrop open={openBackdrop} />
           <Grid item xs={12}>
             <Grid container direction="column" padding={3} alignItems="center">
               <Grid item>
@@ -77,6 +77,7 @@ const RandomMessages = () => {
                   padding={3}
                   alignItems="center"
                   spacing={2}
+                  sx={{ minWidth: '400px', minHeight: '200px' }}
                 >
                   {showMessage ? (
                     <Grid item>
@@ -107,7 +108,7 @@ const RandomMessages = () => {
                         </Typography>
                       </Grid>
                       <Grid item>
-                        <CountdownTimer targetDateTime={new Date()} />
+                        <CountdownTimer />
                       </Grid>
                     </Grid>
                   )}

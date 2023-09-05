@@ -22,3 +22,10 @@ export const formateDateEn = (data) => {
 
   return `${year}-${month}-${day}`;
 };
+export const formateDateNewDate = (data) => {
+  const year = data.getFullYear();
+  const month = String(data.getMonth() + 1).padStart(2, '0'); // Os meses começam em 0 (janeiro)
+  const day = String(data.getDate()).padStart(2, '0');
+
+  return `${year}-${month}-${day}`;
+};
