@@ -82,6 +82,10 @@ const Signin = () => {
     if (user && user.sendSignin?.document?.typeOfAccess?.length > 0) {
       if (user.sendSignin?.document?.typeOfAccess === 'Colaborador') {
         navigate('/randomMessages', { replace: true });
+      } else if (user.sendSignin?.document?.typeOfAccess === 'Lider') {
+        navigate('/TeamMessages', { replace: true });
+      } else if (user.sendSignin?.document?.typeOfAccess === 'Administrador') {
+        navigate('/UserManagement', { replace: true });
       } else {
         navigate('/', { replace: true });
       }
