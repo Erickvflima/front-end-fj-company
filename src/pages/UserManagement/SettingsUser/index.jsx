@@ -76,7 +76,6 @@ const SettingsUser = ({ data, open, handleClose }) => {
           meta: { requestStatus },
         } = await dispatch(sendSignup(values));
         if (requestStatus === 'fulfilled' && payload.status === 'success') {
-          console.log('aquiii dois');
           handleClose();
           enqueueSnackbar('Usuario criado com sucesso!', {
             variant: 'success',
@@ -90,7 +89,7 @@ const SettingsUser = ({ data, open, handleClose }) => {
             autoHideDuration: 2000,
           });
         }
-        console.log('aquiii');
+
         setOpenBackdrop(false);
       }
       setOpenBackdrop(false);
